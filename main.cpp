@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -58,6 +59,126 @@ class Binary_ofstream
 		Binary_ofstream& operator << (const int& data)
 		{
 			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const unsigned int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const long int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const long unsigned int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const short int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const unsigned short int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const long long int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const unsigned long long int& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const char& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const unsigned char& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const float& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const double& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const long double& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const bool& data)
+		{
+			output.write((char*)&data, sizeof(data));
+			
+			return *this;
+		}
+		
+		template <class T>
+		Binary_ofstream& operator << (const vector<T>& data)
+		{
+			unsigned int i;
+			
+			operator << (data.size());
+			
+			for(i=0; i<data.size(); i++)
+			{
+				operator << (data[i]);
+			}
+			
+			return *this;
+		}
+		
+		Binary_ofstream& operator << (const string& data)
+		{
+			unsigned int i;
+			
+			operator << (data.size());
+			
+			for(i=0; i<data.size(); i++)
+			{
+				operator << (data[i]);
+			}
 			
 			return *this;
 		}
@@ -130,6 +251,140 @@ class Binary_ifstream
 			
 			return *this;
 		}
+		
+		Binary_ifstream& operator >> (unsigned int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (long int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (unsigned long int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (short int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (unsigned short int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (long long int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (unsigned long long int& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (char& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (unsigned char& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (float& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (double& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (long double& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (bool& data)
+		{
+			input.read((char*)&data,sizeof(data));
+			
+			return *this;
+		}
+		
+		template <class T>
+		Binary_ifstream& operator >> (vector<T>& data)
+		{
+			data.clear();
+			
+			unsigned int i;
+			unsigned int size;
+			
+			operator >> (size);
+			
+			for(i=0; i<size; i++)
+			{
+				T temp;
+				
+				operator >> (temp);
+				
+				data.push_back(temp);
+			}
+			
+			return *this;
+		}
+		
+		Binary_ifstream& operator >> (string& data)
+		{
+			data.clear();
+			
+			unsigned int i;
+			unsigned int size;
+			
+			operator >> (size);
+			
+			for(i=0; i<size; i++)
+			{
+				char temp;
+				
+				operator >> (temp);
+				
+				data.push_back(temp);
+			}
+			
+			return *this;
+		}
 };
 
 int main()
@@ -137,28 +392,22 @@ int main()
 	Binary_ofstream output;
 	Binary_ifstream input;
 	
+	string test = "Hello World!";
+	
 	output.open("test.bin");
-	
-	output << 0;
-	output << 1;
-	output << 2;
-	output << 4;
-	output << 8;
-	
+	output << test;
 	output.close();
 	
 	input.open("test.bin");
-	
-	int temp;
-	
-	while(!input.eof())
-	{
-		input >> temp;
-		
-		cout << temp << '\n';
-	}
-	
+	input >> test;
 	input.close();
+	
+	unsigned int i=0;
+	
+	for(i=0; i<test.size(); i++)
+	{
+		cout << test[i] << '\n';
+	}
 	
 	return 1;
 }
