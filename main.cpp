@@ -56,6 +56,29 @@ class Binary_ofstream
 			return output.eof();
 		}
 		
+		unsigned int tell()
+		{
+			return output.tellp();
+		}
+		
+		void* seek(unsigned int pos)
+		{
+			return output.seekp(pos);
+		}
+		
+		unsigned int size()
+		{
+			unsigned int cur = output.tellp();
+			
+			output.seekp(0,ios::end);
+			
+			unsigned int end = output.tellp();
+			
+			output.seekp(cur,ios::beg);
+			
+			return end;
+		}
+		
 		Binary_ofstream& operator << (const int& data)
 		{
 			output.write((char*)&data, sizeof(data));
@@ -245,6 +268,19 @@ class Binary_ifstream
 			return input.seekg(pos);
 		}
 		
+		unsigned int size()
+		{
+			unsigned int cur = input.tellg();
+			
+			input.seekg(0,ios::end);
+			
+			unsigned int end = input.tellg();
+			
+			input.seekg(cur);
+			
+			return end;
+		}
+		
 		Binary_ifstream& operator >> (int& data)
 		{
 			input.read((char*)&data,sizeof(data));
@@ -392,7 +428,11 @@ int main()
 	Binary_ofstream output;
 	Binary_ifstream input;
 	
-	string test = "Hello World!";
+	vector<string> test;
+	
+	test.push_back("String 1");
+	test.push_back("String 2");
+	test.push_back("String 3");
 	
 	output.open("test.bin");
 	output << test;
