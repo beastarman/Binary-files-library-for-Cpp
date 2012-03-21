@@ -5,6 +5,16 @@
 
 using namespace std;
 
+class Binary_ofstream;
+class Binary_ifstream;
+
+class Bin_IO
+{
+	public:
+		virtual Binary_ofstream& write(Binary_ofstream& output) const = 0;
+		virtual Binary_ifstream& read(Binary_ifstream& input) = 0;
+};
+
 class Binary_ofstream
 {
 	private:
@@ -204,6 +214,11 @@ class Binary_ofstream
 			}
 			
 			return *this;
+		}
+		
+		Binary_ofstream& operator << (const Bin_IO& data)
+		{
+			return data.write(*this);
 		}
 };
 
@@ -421,6 +436,28 @@ class Binary_ifstream
 			
 			return *this;
 		}
+		
+		Binary_ifstream& operator >> (Bin_IO& data)
+		{
+			return data.read(*this);
+		}
+};
+
+class A : public Bin_IO
+{
+	public:
+		int a;
+		int b;
+		
+		Binary_ofstream& write(Binary_ofstream& output) const
+		{
+			return output << a << b;
+		}
+		
+		Binary_ifstream& read(Binary_ifstream& input)
+		{
+			return input >> a >> b;
+		}
 };
 
 int main()
@@ -428,26 +465,23 @@ int main()
 	Binary_ofstream output;
 	Binary_ifstream input;
 	
-	vector<string> test;
+	A temp;
 	
-	test.push_back("String 1");
-	test.push_back("String 2");
-	test.push_back("String 3");
+	temp.a=10;
+	temp.b=20;
 	
-	output.open("test.bin");
-	output << test;
+	output.open(string("test.bin"));
+	output << temp;
 	output.close();
 	
-	input.open("test.bin");
-	input >> test;
+	temp.a=0;
+	temp.b=0;
+	
+	input.open(string("test.bin"));
+	input >> temp;
 	input.close();
 	
-	unsigned int i=0;
-	
-	for(i=0; i<test.size(); i++)
-	{
-		cout << test[i] << '\n';
-	}
+	cout << temp.a << ' ' << temp.b << '\n';
 	
 	return 1;
 }
