@@ -443,7 +443,7 @@ class Binary_ifstream
 		}
 };
 
-class A : public Bin_IO
+class Class_A : public Bin_IO
 {
 	public:
 		int a;
@@ -460,28 +460,63 @@ class A : public Bin_IO
 		}
 };
 
+class Class_B : public Bin_IO
+{
+	public:
+		vector<Class_A> classes;
+	
+	public:
+		Binary_ofstream& write(Binary_ofstream& output) const
+		{
+			return output << classes;
+		}
+		
+		Binary_ifstream& read(Binary_ifstream& input)
+		{
+			return input >> classes;
+		}
+		
+		bool add(int a, int b)
+		{
+			Class_A temp;
+			
+			temp.a=a;
+			temp.b=b;
+			
+			classes.push_back(temp);
+			
+			return 1;
+		}
+};
+
 int main()
 {
 	Binary_ofstream output;
 	Binary_ifstream input;
 	
-	A temp;
+	unsigned int i=0;
 	
-	temp.a=10;
-	temp.b=20;
+	Class_B temp;
+	Class_B other;
 	
-	output.open(string("test.bin"));
+	temp.add(0,10);
+	temp.add(20,10);
+	temp.add(20,30);
+	temp.add(40,30);
+	temp.add(40,0);
+	
+	output.open("test.bin");
 	output << temp;
 	output.close();
 	
-	temp.a=0;
-	temp.b=0;
-	
-	input.open(string("test.bin"));
-	input >> temp;
+	input.open("test.bin");
+	input >> other;
 	input.close();
 	
-	cout << temp.a << ' ' << temp.b << '\n';
+	for(i=0; i<other.classes.size(); i++)
+	{
+		cout << other.classes[i].a << ' ' << other.classes[i].b << '\n';
+	}
 	
 	return 1;
 }
